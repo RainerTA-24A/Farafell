@@ -23,8 +23,3 @@ battle(&hp); // Saadame HP aadressi
 printf("HP pärast võitlust: %d\n", hp); // Nüüd on 80!
 return 0;
 }
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <time.h>

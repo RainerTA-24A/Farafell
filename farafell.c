@@ -13,10 +13,17 @@ bool running = true;
 
 typedef struct
 {
-    int potions;
+    int shopPotions;
+    int treasurePotions;
 } Inventar;
 
-Inventar inventar = {1}; // Annab väärtuse 0 kõigile
+Inventar inventar = {
+    .shopPotions = 0,
+    .treasurePotions = 1,
+};
+
+int inventaar(void);
+void fear(void);
 
 int main()
 {
@@ -42,23 +49,7 @@ int main()
         }
         else if (choose == 'i')
         {
-            printf("You have %d potions right now.\n", inventar.potions);
-
-            if (inventar.potions > 0)
-            {
-                printf("Do you want to drink a potion for +30 health?\n");
-                printf("(y/n): ");
-                scanf(" %c", &choose);
-                if (choose == 'y' && health <= 70)
-                {
-                    health += 30;
-                    inventar.potions--;
-                }
-                else if (choose == 'y' && health > 70)
-                {
-                    printf("You have over 70 hp, cant drink the potion right now!\n");
-                }
-            }
+            inventaar();
         }
         else if (choose == 'w')
             y++;
@@ -72,7 +63,7 @@ int main()
         // Juhuslik kohtumine
         if (rand() % 10 < 3)
         {
-            // battle();
+            fear();
         }
 
         // shop at location x=2, y=2
@@ -89,4 +80,68 @@ int main()
     }
 
     return 0;
+}
+
+int inventaar(void)
+{
+    char invChoice;
+    printf("You have %d shopPotions right now.\n", inventar.shopPotions);
+    printf("You have %d treasurePotions right now.\n", inventar.treasurePotions);
+
+    if (inventar.shopPotions > 0)
+    {
+        printf("Do you want to drink a potion for +30 health?\n");
+        printf("(y/n): ");
+        scanf(" %c", &invChoice);
+        if (invChoice == 'y' && health <= 70)
+        {
+            health += 30;
+            inventar.shopPotions--;
+        }
+        else if (invChoice == 'y' && health > 70)
+        {
+            printf("You have over 70 hp, cant drink the potion right now!\n");
+        }
+    }
+
+    if (inventar.treasurePotions > 0)
+    {
+        printf("Do you want to drink a potion for +15 health?\n");
+        printf("(y/n): ");
+        scanf(" %c", &invChoice);
+        if (invChoice == 'y' && health <= 85)
+        {
+            health += 15;
+            inventar.treasurePotions--;
+        }
+        else if (invChoice == 'y' && health > 85)
+        {
+            printf("You have over 85 hp, cant drink the potion right now!\n");
+        }
+    }
+}
+
+void fear(void)
+{
+    char monsterChoice;
+    printf("\nPimedast ilmub välja metslik koll! Your feet are shaking...\n");
+    do
+    {
+        printf("Will you fight or run?(f=fight/e=escape): ");
+        scanf(" %c", &monsterChoice);
+
+        if (monsterChoice != 'f' && monsterChoice != 'e')
+        {
+            printf("Wrong choice! Choose f or e\n");
+        }
+    } while (monsterChoice != 'f' && monsterChoice != 'e');
+
+    switch (monsterChoice)
+    {
+    case 'f':
+        // battle();
+        break;
+    case 'e':
+        printf("You escaped from the monster!\n");
+    }
 }
